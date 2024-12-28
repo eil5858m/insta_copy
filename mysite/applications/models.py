@@ -39,7 +39,7 @@ class PostLike(models.Model):
     created_at = models.DateField(auto_now_add=True)
 
     class Meta:
-        unique_together =('user', 'post')
+        unique_together = ('user', 'post')
 
     def __str__(self):
         return f'{self.user}, {self.created_at}, {self.post}'
@@ -62,7 +62,7 @@ class CommentLike(models.Model):
     created_at = models.DateField(auto_now_add=True)
 
     class Meta:
-        unique_together =('user', 'comment')
+        unique_together = ('user', 'comment')
 
     def __str__(self):
         return f'{self.user}, {self.created_at}, {self.comment}'
@@ -92,3 +92,17 @@ class SaveItem(models.Model):
 
     def __str__(self):
         return f'{self.post}, {self.save}'
+
+
+class Chat(models.Model):
+    person = models.ManyToManyField(UserProfile)
+    created_date = models.DateField(auto_now_add=True)
+
+
+class Message(models.Model):
+    chat = models.ForeignKey(Chat, on_delete=models.CASCADE)
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    text = models.TextField(null=True, blank=True)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
+    video = models.FileField(upload_to='videos/', null=True, blank=True)
+    created_date = models.DateField(auto_now_add=True)
